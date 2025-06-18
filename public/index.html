@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>פרויקטים</title>
+    <style>
+      body {
+        direction: rtl;
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      img {
+        height: auto;
+      }
+      hr {
+        border: 1px solid #ccc;
+        margin: 15px 0;
+      }
+      a, a:focus {
+        text-decoration: none;
+        color: #333;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      #loading {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+      }
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        display: flex;
+        flex-direction: column;
+      }
+      .card img.main-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+      }
+      .card-body {
+        padding: 15px;
+      }
+      .card-logo {
+        width: 100%;
+      }
+      .project-title {
+        font-size: 1.1em;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      .project-address {
+        font-size: 0.95em;
+        color: #666;
+      }
+      .project-promotional {
+        font-size: 0.9em;
+        font-weight: bold;
+        color: #ff5722;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <h1>פרוקטים</h1>
+    <div id="project-grid" class="grid"></div>
+    <div id="loading"></div>
+
+    <script>
+      let currentPage = 1;
+      let loading = false;
+      const loadingDiv = document.getElementById('loading');
+      const gridContainer = document.getElementById('project-grid');
+
+      function createMadlanCard(project) {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        card.innerHTML = `
+        <img class="main-image" src="${project.images[0].path || ''}" alt="Main Image" />
+        <div class="card-body">
+          <div class="project-title">
+            <a href="https://www.madlan.co.il/projects/${project.id || ''}" target="_blank">${project.projectName || ''}</a>
+          </div>
+          <div class="project-address">
+            ${project.addressDetails.streetName || ''}
+            ${project.addressDetails.streetNumber || ''},
+            ${project.addressDetails.neighbourhood || ''}
+          </div>
+          <div class="project-promotional">${project.discount.description || ''}</div>
+        </div>
+      `;
+
+        gridContainer.appendChild(card);
+      }
+
+      function createYad2Card(project) {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        card.innerHTML = `
+        <img class="main-image" src="${project.mainImage || ''}" alt="Main Image" />
+        <div class="card-body">
+          <img class="card-logo" src="${project.projectLogo}" alt="Logo" />
+          <hr/>
+          <div class="project-title">
+            <a href="https://www.yad2.co.il/yad1/project/${project.slug || ''}" target="_blank">${project.projectName || ''}</a>
+          </div>
+          <div class="project-address">${project.address || ''}</div>
+          <div class="project-promotional">${project.promotionalLabel || ''}</div>
+        </div>
+      `;
+
+        gridContainer.appendChild(card);
+      }
+
+      async function loadMadlanProjects() {
+        try {
+          loadingDiv.textContent = 'טוען פרויקטים...';
+          const response = await fetch(`${location.origin}/api/projects/madlan`);
+          const madlanData = await response.json();
+
+          if (Array.isArray(madlanData)) {
+            madlanData.forEach(project => createMadlanCard(project));
+          }
+
+          loadingDiv.textContent = '';
+        } catch (err) {
+          console.error('Error loading projects:', err);
+          loadingDiv.textContent = 'שגיאה';
+        }
+      }
+
+      async function loadYad2Projects(page) {
+        try {
+          loading = true;
+          loadingDiv.textContent = 'טוען פרויקטים...';
+
+          const response = await fetch(`${location.origin}/api/projects/yad2?page=` + page);
+          const data = await response.json();
+
+          if (!Array.isArray(data) || data.length === 0) {
+            loadingDiv.textContent = '';
+            window.removeEventListener('scroll', onScroll);
+            return;
+          }
+
+          data.forEach(project => createYad2Card(project));
+
+          loading = false;
+          loadingDiv.textContent = '';
+        } catch (err) {
+          console.error('Error loading projects:', err);
+          loadingDiv.textContent = 'שגיאה';
+        }
+      }
+
+      function onScroll() {
+        const scrollY = window.scrollY;
+        const threshold = document.body.offsetHeight - window.innerHeight - 200;
+        if (scrollY > threshold && !loading) {
+          currentPage++;
+          loadYad2Projects(currentPage);
+        }
+      }
+
+      (async () => {
+        await loadMadlanProjects();
+        await loadYad2Projects(currentPage);
+        window.addEventListener('scroll', onScroll);
+      })();
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "name": "yad1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --exec ts-node ./src/index.ts",
+    "clean": "rimraf ./dist",
+    "build": "tsc",
+    "copy": "run-script-os",
+    "copy:win32": "",
+    "copy:default": "",
+    "start": "node ./dist/index.js",
+    "build:start": "yarn clean && yarn build && yarn copy && yarn start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ageva10/yad1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ageva10/yad1/issues"
+  },
+  "homepage": "https://github.com/ageva10/yad1#readme",
+  "devDependencies": {
+    "@types/node": "^24.0.1",
+    "nodemon": "^3.1.10",
+    "rimraf": "^6.0.1",
+    "run-script-os": "^1.1.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@types/compression": "^1.8.1",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "axios": "^1.9.0",
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.13",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0"
+  }
+}
