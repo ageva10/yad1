@@ -87,8 +87,12 @@
         const card = document.createElement('div');
         card.className = 'card';
 
+        const mainImage = project.images[0].path.indexOf('madlan.co.il') === -1
+          ? `https://images2.madlan.co.il/t:nonce:v=2/${project.images[0].path}`
+          : project.images[0].path;
+
         card.innerHTML = `
-        <img class="main-image" src="${project.images[0].path || ''}" alt="Main Image" />
+        <img class="main-image" src="${mainImage || ''}" alt="Main Image" />
         <div class="card-body">
           <div class="project-title">
             <a href="https://www.madlan.co.il/projects/${project.id || ''}" target="_blank">${project.projectName || ''}</a>

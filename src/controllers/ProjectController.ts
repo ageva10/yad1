@@ -24,38 +24,52 @@ class ProjectController extends BaseController {
     try {
       const { page = 1 } = req.query
 
-      const { data } = await axios.get(`${this.yad2BaseUrl}/yad1/_next/data/6C86XLWkvRiUVvjHrQ0bk/newprojects.json`, {
+      const headers = {
+        'accept': '*/*',
+        'accept-language': 'en-US,en;q=0.9',
+        'baggage': 'sentry-environment=prod,sentry-release=yad1-35a649c265bf3904b687eaa74bd905d3cb6e51e3,sentry-public_key=fd7d23a8d868485399868caf5fd39b0d,sentry-trace_id=6ccb3bbe69fc41b8a4f0caed2da802df,sentry-sample_rate=1,sentry-sampled=true',
+        'priority': 'u=1, i',
+        'referer': 'https://www.yad2.co.il/yad1/newprojects?category=1&bBox=31.907561%2C34.758622%2C32.222753%2C35.015376&zoom=11',
+        'sec-ch-ua': '"Google Chrome";v="137", "Chromium";v="137", "Not/A)Brand";v="24"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'sec-fetch-dest': 'empty',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-site': 'same-origin',
+        'sentry-trace': '6ccb3bbe69fc41b8a4f0caed2da802df-97e38054077fc418-1',
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+        'uzlc': 'true',
+        'x-nextjs-data': '1',
+        'Cookie': 'adminer_key=ac78ee0a7c8a93502e5657b801261418; adminer_permanent=; adminer_sid=34r6c61sb3i6p73b78g19d6g00; io=Jm9pgQ9sTVrdRaIlAAAC'
+      };
+
+      // Petah Tikva
+      const { data: result1 } = await axios.get(`${this.yad2BaseUrl}/yad1/_next/data/6C86XLWkvRiUVvjHrQ0bk/newprojects.json`, {
         params: {
-          zoom: 11,
           topArea: 2,
           area: 4,
           city: 7900,
-          category: 1,
           page
         },
-        headers: {
-          'accept': '*/*',
-          'accept-language': 'en-US,en;q=0.9',
-          'baggage': 'sentry-environment=prod,sentry-release=yad1-35a649c265bf3904b687eaa74bd905d3cb6e51e3,sentry-public_key=fd7d23a8d868485399868caf5fd39b0d,sentry-trace_id=6ccb3bbe69fc41b8a4f0caed2da802df,sentry-sample_rate=1,sentry-sampled=true',
-          'priority': 'u=1, i',
-          'referer': 'https://www.yad2.co.il/yad1/newprojects?category=1&bBox=31.907561%2C34.758622%2C32.222753%2C35.015376&zoom=11',
-          'sec-ch-ua': '"Google Chrome";v="137", "Chromium";v="137", "Not/A)Brand";v="24"',
-          'sec-ch-ua-mobile': '?0',
-          'sec-ch-ua-platform': '"Windows"',
-          'sec-fetch-dest': 'empty',
-          'sec-fetch-mode': 'cors',
-          'sec-fetch-site': 'same-origin',
-          'sentry-trace': '6ccb3bbe69fc41b8a4f0caed2da802df-97e38054077fc418-1',
-          'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
-          'uzlc': 'true',
-          'x-nextjs-data': '1',
-          'Cookie': 'adminer_key=ac78ee0a7c8a93502e5657b801261418; adminer_permanent=; adminer_sid=34r6c61sb3i6p73b78g19d6g00; io=Jm9pgQ9sTVrdRaIlAAAC'
+        headers,
+      })
+
+      // Kiryat Ono
+      const { data: result2 } = await axios.get(`${this.yad2BaseUrl}/yad1/_next/data/6C86XLWkvRiUVvjHrQ0bk/newprojects.json`, {
+        params: {
+          topArea: 2,
+          area: 10,
+          city: 2620,
+          page
         },
+        headers,
       })
 
       const projects = [
-        ...data.pageProps.boostProjectsRes.projects,
-        ...data.pageProps.projectsRes.projects,
+        ...result1.pageProps.boostProjectsRes.projects,
+        ...result2.pageProps.boostProjectsRes.projects,
+        ...result1.pageProps.projectsRes.projects,
+        ...result2.pageProps.projectsRes.projects,
       ]
 
       return res.status(200).json(projects)
