@@ -38,7 +38,7 @@ class ProjectController extends BaseController {
       return res.status(200).json(projects)
 
     } catch (err: unknown) {
-      return res.status(400).end()
+      return res.status(400).send(err)
     }
   }
 
