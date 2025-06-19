@@ -116,7 +116,8 @@ class ProjectController extends BaseController {
               "order": "asc",
               "reference": null,
               "docIds": [
-                "פתח-תקווה-ישראל"
+                "פתח-תקווה-ישראל",
+                "קרית-אונו-ישראל"
               ]
             }
           ],
@@ -160,7 +161,7 @@ class ProjectController extends BaseController {
       let projects = data.data.searchPoiV2.poi.filter((poi: any): boolean => poi.type === 'project')
 
       projects = projects.filter((project: any): boolean =>
-        /פתח תקו(ה|וה)/.test(project.addressDetails.city)
+        /(פתח תקו(ה|וה)|קרית אונו)/.test(project.addressDetails.city)
       )
 
       return res.status(200).json(projects)
