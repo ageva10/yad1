@@ -24,17 +24,30 @@ class ProjectController extends BaseController {
     try {
       const { page = 1 } = req.query
 
-      console.log('getYad2 started')
+      const headers = {
+        'X-RapidAPI-Proxy-Secret': '48b5eeb0-3ca0-11ed-9ba8-135292087cb2',
+        'X-RapidAPI-User': 'Yad1'
+      }
 
       // Petah Tikva
-      const { data: result1 } = await axios.get(`https://gw.yad2.co.il/yad1/projects?topArea=2&area=4&city=7900&limit=200&page=${page}`)
+      const { data: result1 } = await axios.post(`https://proxy.alongeva.dev/api/zone/request?zone=data_center&country=il`, {
+        url: `https://gw.yad2.co.il/yad1/projects?topArea=2&area=4&city=7900&limit=200&page=${page}`,
+        method: 'GET'
+      }, {
+        headers
+      })
 
       // Kiryat Ono
-      // const { data: result2 } = await axios.get(`https://gw.yad2.co.il/yad1/projects?topArea=2&area=10&city=2620&limit=200&page=${page}`)
+      const { data: result2 } = await axios.post(`https://proxy.alongeva.dev/api/zone/request?zone=data_center&country=il`, {
+        url: `https://gw.yad2.co.il/yad1/projects?topArea=2&area=10&city=2620&limit=200&page=${page}`,
+        method: 'GET'
+      }, {
+        headers
+      })
 
       const projects = [
         ...result1.data.projects,
-        // ...result2.data.projects,
+        ...result2.data.projects,
       ]
 
       return res.status(200).json(projects)
