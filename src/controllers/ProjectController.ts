@@ -24,6 +24,8 @@ class ProjectController extends BaseController {
     try {
       const { page = 1 } = req.query
 
+      await axios.get(`https://gw.yad2.co.il/yad1/projects?topArea=2&area=4&city=7900&limit=200&page=${page}`)
+
       // Petah Tikva
       const { data: result1 } = await axios.get(`https://gw.yad2.co.il/yad1/projects?topArea=2&area=4&city=7900&limit=200&page=${page}`)
 
@@ -34,9 +36,6 @@ class ProjectController extends BaseController {
         ...result1.data.projects,
         ...result2.data.projects,
       ]
-
-      console.log('result1', result1)
-      console.log('result2', result2)
 
       return res.status(200).json(projects)
 
