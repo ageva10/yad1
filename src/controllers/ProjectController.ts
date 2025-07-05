@@ -35,6 +35,9 @@ class ProjectController extends BaseController {
         ...result2.data.projects,
       ]
 
+      console.log('result1', result1)
+      console.log('result2', result2)
+
       return res.status(200).json(projects)
 
     } catch (err: unknown) {
