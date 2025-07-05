@@ -27,21 +27,26 @@ class ProjectController extends BaseController {
       // Petah Tikva
       const { data: result1 } = await axios.get(`https://gw.yad2.co.il/yad1/projects?topArea=2&area=4&city=7900&limit=200&page=${page}`, {
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
+          'Cookie': 'uzmx=7f90006bbef654-979e-44dc-8d5b-e90e4b2d0d7a5-17494053138822305631644-5d06aa04092c9294163; __uzma=6fd01148-4fbd-4d59-8625-09f5a254419b; __uzmb=1749405313; __uzmc=490947025065; __uzmd=1751710945; __uzme=1229; __uzmf=7f90006fd01148-4fbd-4d59-8625-09f5a254419b1-175171092608219444-000040bc7604acd94c370',
+          'User-Agent': 'PostmanRuntime/7.44.1',
+          'Cache-Control': 'no-cache',
+          'Accept': '*/*',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'Connection': 'keep-alive',
         }
       })
       console.log(result1)
 
       // Kiryat Ono
-      const { data: result2 } = await axios.get(`https://gw.yad2.co.il/yad1/projects?topArea=2&area=10&city=2620&limit=200&page=${page}`, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
-        }
-      })
+      // const { data: result2 } = await axios.get(`https://gw.yad2.co.il/yad1/projects?topArea=2&area=10&city=2620&limit=200&page=${page}`, {
+      //   headers: {
+      //     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
+      //   }
+      // })
 
       const projects = [
         ...result1.data.projects,
-        ...result2.data.projects,
+        // ...result2.data.projects,
       ]
 
       return res.status(200).json(projects)
