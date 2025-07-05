@@ -25,11 +25,19 @@ class ProjectController extends BaseController {
       const { page = 1 } = req.query
 
       // Petah Tikva
-      const { data: result1 } = await axios.get(`https://gw.yad2.co.il/yad1/projects?topArea=2&area=4&city=7900&limit=200&page=${page}`)
+      const { data: result1 } = await axios.get(`https://gw.yad2.co.il/yad1/projects?topArea=2&area=4&city=7900&limit=200&page=${page}`, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
+        }
+      })
       console.log(result1)
 
       // Kiryat Ono
-      const { data: result2 } = await axios.get(`https://gw.yad2.co.il/yad1/projects?topArea=2&area=10&city=2620&limit=200&page=${page}`)
+      const { data: result2 } = await axios.get(`https://gw.yad2.co.il/yad1/projects?topArea=2&area=10&city=2620&limit=200&page=${page}`, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
+        }
+      })
 
       const projects = [
         ...result1.data.projects,
