@@ -114,15 +114,15 @@
         card.className = 'card';
 
         card.innerHTML = `
-        <img class="main-image" src="${project.mainImage || ''}" alt="Main Image" />
+        <img class="main-image" src="${project.metaData.coverImage || ''}" alt="Main Image" />
         <div class="card-body">
-          <img class="card-logo" src="${project.projectLogo}" alt="Logo" />
+          <img class="card-logo" src="${project.metaData.projectLogo}" alt="Logo" />
           <hr/>
           <div class="project-title">
-            <a href="https://www.yad2.co.il/yad1/project/${project.slug || ''}" target="_blank">${project.projectName || ''}</a>
+            <a href="https://www.yad2.co.il/yad1/project/${project.slug || ''}" target="_blank">${project.metaData.projectName || ''}</a>
           </div>
-          <div class="project-address">${project.address || ''}</div>
-          <div class="project-promotional">${project.promotionalLabel || ''}</div>
+          <div class="project-address">${project.address.display || ''}</div>
+          <div class="project-promotional">${project.metaData.promotionText || ''}</div>
         </div>
       `;
 
